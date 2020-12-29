@@ -120,37 +120,37 @@ def validate_container(ets_preset_payload, unsupported):
 
 def validate_video(ets_preset_payload, unsupported):
     
-	if ets_preset_payload['Preset']['Video']:
-    		if  json.dumps(ets_preset_payload['Preset']['Video']['Codec']) in unsupported:
-        		print 'Unsupported Video codec found in preset, please try anohter preset'
-        		exit()
-    		else:
-        		supported_video = json.dumps(ets_preset_payload['Preset']['Video']['Codec'])
-        		if args.verbose == True:
-            			print '==================VERBOSE LOGGING=================='
-            			print 'Supported Video Codec Found!'
-            			print  supported_video
-        		return supported_video  
-	else:
-		supported_video = 'none'
-		return supported_video
+    if ets_preset_payload['Preset']['Video']:
+            if  json.dumps(ets_preset_payload['Preset']['Video']['Codec']) in unsupported:
+                print 'Unsupported Video codec found in preset, please try anohter preset'
+                exit()
+            else:
+                supported_video = json.dumps(ets_preset_payload['Preset']['Video']['Codec'])
+                if args.verbose == True:
+                        print '==================VERBOSE LOGGING=================='
+                        print 'Supported Video Codec Found!'
+                        print  supported_video
+                return supported_video  
+    else:
+        supported_video = 'none'
+        return supported_video
 
 
 def validate_audio(ets_preset_payload, unsupported):
-	if ets_preset_payload['Preset']['Audio']:
-    		if  json.dumps(ets_preset_payload['Preset']['Audio']['Codec']) in unsupported:
-        		print 'Unsupported Video condec found in preset, please try anohter preset'
-        		exit()
-    		else:
-        		supported_audio = json.dumps(ets_preset_payload['Preset']['Audio']['Codec'])
-        		if args.verbose == True:
-            			print '==================VERBOSE LOGGING=================='
-            			print 'Supported Audio Codec Found'
-            			print supported_audio
-        		return supported_audio
-	else:
-		supported_audio = 'none'
-		return supported_audio
+    if ets_preset_payload['Preset']['Audio']:
+            if  json.dumps(ets_preset_payload['Preset']['Audio']['Codec']) in unsupported:
+                print 'Unsupported Video condec found in preset, please try anohter preset'
+                exit()
+            else:
+                supported_audio = json.dumps(ets_preset_payload['Preset']['Audio']['Codec'])
+                if args.verbose == True:
+                        print '==================VERBOSE LOGGING=================='
+                        print 'Supported Audio Codec Found'
+                        print supported_audio
+                return supported_audio
+    else:
+        supported_audio = 'none'
+        return supported_audio
 
 def validate_output(outputtype):
     if args.interactive==True:
@@ -201,13 +201,13 @@ def translate_audio(ets_preset_payload,s_audio):
         if ets_channel_num == '"2"':
             audio_coding = "CODING_MODE_2_0"
         elif ets_channel_num == '"1"':
-            audio_coding == "CODING_MODE_1_0"
+            audio_coding = "CODING_MODE_1_0"
         else:
-            audio_coding == "CODING_MODE_2_0"
+            audio_coding = "CODING_MODE_2_0"
         
         emf_bitrate = str(min(aac_range, key=lambda x:abs(x-ets_audio_bitrate)))       
         emf_bitrate = long(emf_bitrate) * 1000 
-	emf_sample = ets_preset_payload['Preset']['Audio']['SampleRate']
+        emf_sample = ets_preset_payload['Preset']['Audio']['SampleRate']
         AudioSettings = {}
         AudioSettings = {
                  "LanguageCodeControl": "FOLLOW_INPUT",
@@ -227,10 +227,10 @@ def translate_audio(ets_preset_payload,s_audio):
         
 
         if emf_sample != 'auto':
-             AudioSettings['CodecSettings']['AacSettings'].update({"SampleRate": int(emf_sample)})
+            AudioSettings['CodecSettings']['AacSettings'].update({"SampleRate": int(emf_sample)})
         else:
- 	     warning = "Auto in setting Sample Rate not supported...defaulting to  48kHz\n"
-             AudioSettings['CodecSettings']['AacSettings'].update({"SampleRate": int(48000)})
+            warning = "Auto in setting Sample Rate not supported...defaulting to  48kHz\n"
+            AudioSettings['CodecSettings']['AacSettings'].update({"SampleRate": int(48000)})
 
 
         if args.verbose == True:
@@ -243,7 +243,7 @@ def translate_audio(ets_preset_payload,s_audio):
         wav_sample=[8,16,22.05,24,32,44.1,48,88.2,96,192] 
         emf_sample = str(min(wav_sample, key=lambda x:abs(x-ets_audio_sample)))
         emf_sample = int(emf_sample) * 1000
-	ets_bitdepth=[16,24]
+        ets_bitdepth=[16,24]
 
         emf_bitdepth=str(min(ets_bitdepth, key=lambda x:abs(x-int(json.dumps(ets_preset_payload['Preset']['Audio']['CodecOptions']['BitDepth']).strip('"')))))
         
@@ -260,7 +260,7 @@ def translate_audio(ets_preset_payload,s_audio):
                     "LanguageCodeControl": "FOLLOW_INPUT",
                     "AudioTypeControl": "FOLLOW_INPUT",
                     "AudioSourceName": "Audio Selector 1",
-		    'CodecSettings':{
+            'CodecSettings':{
                     'Codec': 'WAV',
                     'WavSettings': {
                     'BitDepth': int(emf_bitdepth),
@@ -287,7 +287,7 @@ def translate_audio(ets_preset_payload,s_audio):
         emf_sample = min(mp2_sample_range, key=lambda x:abs(x-ets_audio_sample))
         emf_bitrate = str(min(mp2_range, key=lambda x:abs(x-ets_audio_bitrate)))
         emf_bitrate = int(emf_bitrate) * 1000
-	emf_sample = emf_sample * 1000
+        emf_sample = emf_sample * 1000
         AudioSettings = {}
 
         if json.dumps(ets_preset_payload['Preset']['Audio']['Channels']) == '"auto"' or json.dumps(ets_preset_payload['Preset']['Audio']['Channels'])== '"0"':
@@ -298,7 +298,7 @@ def translate_audio(ets_preset_payload,s_audio):
         AudioSettings = {
                     "LanguageCodeControl": "FOLLOW_INPUT",
                     "AudioTypeControl": "FOLLOW_INPUT",
-		    "AudioSourceName": "Audio Selector 1",
+            "AudioSourceName": "Audio Selector 1",
                     'CodecSettings':{
                     'Codec': 'MP2',
                     'Mp2Settings': {
@@ -359,33 +359,33 @@ def translate_video(ets_preset_payload, s_video):
             print "WARNING: 1b not supported in AWS Elemental MediaConvert, defaulting to auto, please change to 1 or 1.1 based off bitrate and resolution \n"
         else:
             emf_codec_level = ets_preset_payload['Preset']['Video']['CodecOptions']['Level']
-	if emf_codec_level == '1':
-		emf_codec_level = 'LEVEL_1'		
-	elif emf_codec_level == '1.1':
-		emf_codec_level = 'LEVEL_1_1'
-	elif emf_codec_level == '1.2':
-		emf_codec_level = 'LEVEL_1_2'
-	elif emf_codec_level == '1.3':
-		emf_codec_level = '"LEVEL_1_3"'  
-	elif emf_codec_level == '2':
-		emf_codec_level = 'LEVEL_2'
-	elif emf_codec_level == '2.1':
-		emf_codec_level = 'LEVEL_2_1'
-	elif emf_codec_level == '2.2':
-		emf_codec_level = 'LEVEL_2_2'
-	elif emf_codec_level == '3':
-		emf_codec_level = 'LEVEL_3'
-	elif emf_codec_level == '3.1':
-		emf_codec_level = 'LEVEL_3_1'
-	elif emf_codec_level == '3.2':
-		emf_codec_level = 'LEVEL_3_2' 
-	elif emf_codec_level == '4':
-		emf_codec_level = 'LEVEL_4'
-	elif emf_codec_level == '4.1':
-		emf_codec_level = 'LEVEL_4_1'
-	else:
-	    emf_codec_level = "AUTO"
-            print "WARNING: Item not found defaulting to auto, please change based off bitrate and resolution \n"
+    if emf_codec_level == '1':
+        emf_codec_level = 'LEVEL_1'     
+    elif emf_codec_level == '1.1':
+        emf_codec_level = 'LEVEL_1_1'
+    elif emf_codec_level == '1.2':
+        emf_codec_level = 'LEVEL_1_2'
+    elif emf_codec_level == '1.3':
+        emf_codec_level = '"LEVEL_1_3"'  
+    elif emf_codec_level == '2':
+        emf_codec_level = 'LEVEL_2'
+    elif emf_codec_level == '2.1':
+        emf_codec_level = 'LEVEL_2_1'
+    elif emf_codec_level == '2.2':
+        emf_codec_level = 'LEVEL_2_2'
+    elif emf_codec_level == '3':
+        emf_codec_level = 'LEVEL_3'
+    elif emf_codec_level == '3.1':
+        emf_codec_level = 'LEVEL_3_1'
+    elif emf_codec_level == '3.2':
+        emf_codec_level = 'LEVEL_3_2' 
+    elif emf_codec_level == '4':
+        emf_codec_level = 'LEVEL_4'
+    elif emf_codec_level == '4.1':
+        emf_codec_level = 'LEVEL_4_1'
+    else:
+        emf_codec_level = "AUTO"
+        print "WARNING: Item not found defaulting to auto, please change based off bitrate and resolution \n"
     
     if (ets_preset_payload['Preset']['Video']['MaxWidth'] == 'auto') or (ets_preset_payload['Preset']['Video']['MaxHeight'] == 'auto'):
         emf_codec_level = "AUTO"
@@ -401,7 +401,7 @@ def translate_video(ets_preset_payload, s_video):
         emf_interlace_mode = 'BOTTOM_FIELD'
     elif ets_preset_payload['Preset']['Video']['CodecOptions']['InterlacedMode'] == 'Auto':
         emf_interlace_mode = 'PROGRESSIVE'
-	print "WARNING: Auto interlaced mode not supported in MediaConvert, setting to progressive";
+        print "WARNING: Auto interlaced mode not supported in MediaConvert, setting to progressive";
     else:
         emf_interlace_mode = 'PROGRESSIVE'
     
@@ -544,11 +544,11 @@ def translate_video(ets_preset_payload, s_video):
         else:
             VideoSettings[xSettings].update({'FramerateDenominator': 1001})
             if emf_codec_framerate == "29.97" :
-            	emf_codec_framerate = 30000
+                emf_codec_framerate = 30000
             elif emf_codec_framerate == "23.97":
-		emf_codec_framerate = 24000
+                emf_codec_framerate = 24000
             
-	    VideoSettings[xSettings].update({'FramerateNumerator': emf_codec_framerate})
+        VideoSettings[xSettings].update({'FramerateNumerator': emf_codec_framerate})
 
     ###Logic for PAR
     if ets_preset_payload['Preset']['Video']['DisplayAspectRatio'] == "auto":            
@@ -611,13 +611,13 @@ def translate_video(ets_preset_payload, s_video):
         if ets_preset_payload['Preset']['Video']['BitRate']  != 'auto':
             VideoSettings[xSettings].update({'RateControlMode': emf_control_mode})
             emf_bitrate_temp = int(ets_preset_payload['Preset']['Video']['BitRate'])
-	    ##convert kilobits to bits
+            ##convert kilobits to bits
             emf_bitrate = emf_bitrate_temp * 1000   
-	
-	
-	    if emf_bitrate < 1000:
-		    print "WARNING: Bitrate must be greater than 1000, increase to 1000\n"
-		    emf_bitrate = 1000
+    
+    
+            if emf_bitrate < 1000:
+                print "WARNING: Bitrate must be greater than 1000, increase to 1000\n"
+                emf_bitrate = 1000
         else:
              emf_bitrate = 5000000
              VideoSettings[xSettings].update({'RateControlMode': emf_control_mode})
@@ -637,190 +637,191 @@ def translate_video(ets_preset_payload, s_video):
 
 
 def translate_container(emf_AudioDescription,emf_VideoDescription,s_container,emf_outputgroup,s_video):
-	if emf_VideoDescription == 'none' and s_container != '"mp4"':
-			print "Audio only is supported in MP4 contianers\n"
-			exit();
+    if emf_VideoDescription == 'none' and s_container != '"mp4"':
+            print "Audio only is supported in MP4 contianers\n"
+            exit();
 
-	if emf_outputgroup == 'apple' and s_container == '"ts"':
-        	OutputGroupSettings = {}
-        	OutputGroupSettings ={
-        	"Settings":{
-        	"ContainerSettings": {
-        	"Container": "M3U8",
-        	"M3u8Settings": {
-        	"AudioFramesPerPes": 2,
-        	"PcrControl": "PCR_EVERY_PES_PACKET",
-        	"PmtPid": 480,
-        	"Scte35Source": "NONE",
-        	"ProgramNumber": 1,
-        	"PatInterval": 100,
-        	"PmtInterval": 100,
-        	"TimedMetadata": "NONE",
-        	"VideoPid": 481,
-        	"AudioPids": [482,483,484,485,486,487,488,489,490,491,492]
-        	}}}}
-		if emf_VideoDescription is not 'none':
-			OutputGroupSettings['Settings'].update(emf_VideoDescription)
-		if emf_AudioDescription is not 'none':
-			OutputGroupSettings['Settings'].update(emf_AudioDescription)
-		return OutputGroupSettings         
-	elif emf_outputgroup == 'apple' and s_container == '"mp4"':
-		print "This tool only supports converting Non-CMAF HLS presets"
-		exit()
-	elif emf_outputgroup == 'apple' and s_container is not '"ts"':
-		print "ETS Preset must be in a ts container"
-		exit()
+    if emf_outputgroup == 'apple' and s_container == '"ts"':
+        OutputGroupSettings = {}
+        OutputGroupSettings ={
+        "Settings":{
+        "ContainerSettings": {
+        "Container": "M3U8",
+        "M3u8Settings": {
+        "AudioFramesPerPes": 2,
+        "PcrControl": "PCR_EVERY_PES_PACKET",
+        "PmtPid": 480,
+        "Scte35Source": "NONE",
+        "ProgramNumber": 1,
+        "PatInterval": 100,
+        "PmtInterval": 100,
+        "TimedMetadata": "NONE",
+        "VideoPid": 481,
+        "AudioPids": [482,483,484,485,486,487,488,489,490,491,492]
+        }}}}
+        if emf_VideoDescription is not 'none':
+            OutputGroupSettings['Settings'].update(emf_VideoDescription)
+        if emf_AudioDescription is not 'none':
+            OutputGroupSettings['Settings'].update(emf_AudioDescription)
+        return OutputGroupSettings         
+    elif emf_outputgroup == 'apple' and s_container == '"mp4"':
+        print "This tool only supports converting Non-CMAF HLS presets"
+        exit()
+    elif emf_outputgroup == 'apple' and s_container is not '"ts"':
+        print "ETS Preset must be in a ts container"
+        exit()
     
-	if emf_outputgroup == 'dash' and s_video == '"H.264"' and s_container == '"fmp4"':
-		OutputGroupSettings = {}
-		OutputGroupSettings ={        
-		"Settings":{
-		"ContainerSettings": {
-		"Container": "mpd"
-		}}}
-		if emf_VideoDescription is not 'none':	
-			OutputGroupSettings['Settings'].update(emf_VideoDescription)
-		if emf_AudioDescription is not 'none':
-			OutputGroupSettings['Settings'].update(emf_AudioDescription)
-		return OutputGroupSettings
-	elif emf_outputgroup == 'dash' and s_container is not '"fmp4"':
-			print "ETS Preset must have container set to fmp4 for DASH conversion"
-			exit()
-  
-	if emf_outputgroup == 'smooth' and s_video == '"H.264"' and s_container == '"fmp4"':
-		OutputGroupSettings = {}
-		OutputGroupSettings ={
-		"Settings":{
-		"ContainerSettings": {
-		"Container": "ismv"
-		}}}
-		if emf_VideoDescription is not 'none':
-			OutputGroupSettings['Settings'].update(emf_VideoDescription)
-		if emf_AudioDescription is not 'none':
-			OutputGroupSettings['Settings'].update(emf_AudioDescription)
-		return OutputGroupSettings
-	elif emf_outputgroup == 'smooth' and s_container is not '"fmp4"':
-		print "ETS Preset must have contianer set to fmp4 for smooth conversion"
-		exit()
+    if emf_outputgroup == 'dash' and s_video == '"H.264"' and s_container == '"fmp4"':
+        OutputGroupSettings = {}
+        OutputGroupSettings ={        
+        "Settings":{
+        "ContainerSettings": {
+        "Container": "mpd"
+        }}}
+        if emf_VideoDescription is not 'none':  
+            OutputGroupSettings['Settings'].update(emf_VideoDescription)
+        if emf_AudioDescription is not 'none':
+            OutputGroupSettings['Settings'].update(emf_AudioDescription)
+        return OutputGroupSettings
 
-
-
-
-	if emf_outputgroup == 'file':
-		if s_container == '"ts"' or s_container == '"mpg"':
-            		OutputGroupSettings = {}
-            		OutputGroupSettings ={
-            			"Settings":{
-            			"ContainerSettings": {
-            			"Container": "M2TS",
-            			"M2tsSettings":{
-            			"AudioBufferModel": "ATSC",
-            			"EsRateInPes": "EXCLUDE",
-            			"PatInterval": 100,
-            			"Scte35Source": "NONE",
-            			"VideoPid": 481,
-            			"PmtInterval": 100,
-            			"SegmentationStyle": "MAINTAIN_CADENCE",
-            			"PmtPid": 480,
-            			"Bitrate": 0,
-            			"AudioPids": [482, 483,484,485, 486,487, 488, 489, 490,491, 492],
-            			"PrivateMetadataPid": 503,
-            			"DvbSubPids": [460,461,462,463,464,465,466,467,468,469,470,471,472,473,474,475, 476,477,478,479],
-            			"RateMode": "CBR",
-            			"AudioFramesPerPes": 2,
-            			"PcrControl": "PCR_EVERY_PES_PACKET",
-            			"SegmentationMarkers": "NONE",
-            			"EbpAudioInterval": "VIDEO_INTERVAL",
-            			"ProgramNumber": 1,
-            			"BufferModel": "MULTIPLEX",
-            			"DvbTeletextPid": 499,
-            			"EbpPlacement": "VIDEO_AND_AUDIO_PIDS",
-            			"NullPacketBitrate": 0
-        			}}}}
-			if emf_VideoDescription is not 'none':
-            			OutputGroupSettings['Settings'].update(emf_VideoDescription)
-        		if emf_AudioDescription is not 'none':
-				OutputGroupSettings['Settings'].update(emf_AudioDescription)
-        		return OutputGroupSettings
-
-        	elif s_container == '"mp4"':
-            		OutputGroupSettings = {}
-           		OutputGroupSettings ={
-            		"Settings":{
-            		"ContainerSettings": {
-            		"Container": "MP4",
-            		"Mp4Settings": {
-            		"CslgAtom": "INCLUDE" ,
-            		"FreeSpaceBox": "EXCLUDE",
-            		"MoovPlacement": "PROGRESSIVE_DOWNLOAD"        
-            		}}}}
-	    		if emf_VideoDescription is not 'none':
-            			OutputGroupSettings['Settings'].update(emf_VideoDescription)
-            		if emf_AudioDescription is not 'none':
-				OutputGroupSettings['Settings'].update(emf_AudioDescription)
-            		return OutputGroupSettings
-
-        	elif s_container == '"mxf"':
-            		OutputGroupSettings = {}
-            		OutputGroupSettings ={
-            		"Settings":{
-            		"ContainerSettings": {
-            		"Container": "MXF"
-            		}}}
-	    		if emf_VideoDescription is not 'none':
-                		OutputGroupSettings['Settings'].update(emf_VideoDescription)
-	    		if emf_AudioDescription is not 'none':
-           			OutputGroupSettings['Settings'].update(emf_AudioDescription)
-            
-	    		return OutputGroupSettings
-        else:
-            print "Unknown Error Hit...exiting"
+    elif emf_outputgroup == 'dash' and s_container is not '"fmp4"':
+            print "ETS Preset must have container set to fmp4 for DASH conversion"
             exit()
+  
+    if emf_outputgroup == 'smooth' and s_video == '"H.264"' and s_container == '"fmp4"':
+        OutputGroupSettings = {}
+        OutputGroupSettings ={
+        "Settings":{
+        "ContainerSettings": {
+        "Container": "ismv"
+        }}}
+        if emf_VideoDescription is not 'none':
+            OutputGroupSettings['Settings'].update(emf_VideoDescription)
+        if emf_AudioDescription is not 'none':
+            OutputGroupSettings['Settings'].update(emf_AudioDescription)
+        return OutputGroupSettings
+    elif emf_outputgroup == 'smooth' and s_container is not '"fmp4"':
+        print "ETS Preset must have contianer set to fmp4 for smooth conversion"
+        exit()
 
-        
-        #if s_container == 'pcm':
-        
-        #else:
-        #    print "Unknown Error Hit exiting"
-        #    exit()
+
+
+
+    if emf_outputgroup == 'file':
+        if s_container == '"ts"' or s_container == '"mpg"':
+            OutputGroupSettings = {}
+            OutputGroupSettings ={
+                "Settings":{
+                "ContainerSettings": {
+                "Container": "M2TS",
+                "M2tsSettings":{
+                "AudioBufferModel": "ATSC",
+                "EsRateInPes": "EXCLUDE",
+                "PatInterval": 100,
+                "Scte35Source": "NONE",
+                "VideoPid": 481,
+                "PmtInterval": 100,
+                "SegmentationStyle": "MAINTAIN_CADENCE",
+                "PmtPid": 480,
+                "Bitrate": 0,
+                "AudioPids": [482, 483,484,485, 486,487, 488, 489, 490,491, 492],
+                "PrivateMetadataPid": 503,
+                "DvbSubPids": [460,461,462,463,464,465,466,467,468,469,470,471,472,473,474,475, 476,477,478,479],
+                "RateMode": "CBR",
+                "AudioFramesPerPes": 2,
+                "PcrControl": "PCR_EVERY_PES_PACKET",
+                "SegmentationMarkers": "NONE",
+                "EbpAudioInterval": "VIDEO_INTERVAL",
+                "ProgramNumber": 1,
+                "BufferModel": "MULTIPLEX",
+                "DvbTeletextPid": 499,
+                "EbpPlacement": "VIDEO_AND_AUDIO_PIDS",
+                "NullPacketBitrate": 0
+            }}}}
+            if emf_VideoDescription is not 'none':
+                OutputGroupSettings['Settings'].update(emf_VideoDescription)
+            if emf_AudioDescription is not 'none':
+                OutputGroupSettings['Settings'].update(emf_AudioDescription)
+            return OutputGroupSettings
+
+        elif s_container == '"mp4"':
+            OutputGroupSettings = {}
+            OutputGroupSettings ={
+            "Settings":{
+            "ContainerSettings": {
+            "Container": "MP4",
+            "Mp4Settings": {
+            "CslgAtom": "INCLUDE" ,
+            "FreeSpaceBox": "EXCLUDE",
+            "MoovPlacement": "PROGRESSIVE_DOWNLOAD"        
+            }}}}
+            if emf_VideoDescription is not 'none':
+                OutputGroupSettings['Settings'].update(emf_VideoDescription)
+            if emf_AudioDescription is not 'none':
+                OutputGroupSettings['Settings'].update(emf_AudioDescription)
+            return OutputGroupSettings
+
+        elif s_container == '"mxf"':
+            OutputGroupSettings = {}
+            OutputGroupSettings ={
+            "Settings":{
+            "ContainerSettings": {
+            "Container": "MXF"
+            }}}
+            if emf_VideoDescription is not 'none':
+                    OutputGroupSettings['Settings'].update(emf_VideoDescription)
+            if emf_AudioDescription is not 'none':
+                OutputGroupSettings['Settings'].update(emf_AudioDescription)
+            return OutputGroupSettings
+
+    else:
+        print "Unknown Error Hit...exiting"
+        exit()
+
+    
+    #if s_container == 'pcm':
+    
+    #else:
+    #    print "Unknown Error Hit exiting"
+    #    exit()
 
 def translate_thumbnails(ets_preset_payload, etsid):
-	
+    
 
-	
-	emf_preset_thumbnail = {
-  		"Description": etsid + ' Thumbnails',
-  		"Name": etsid + ' Thumbnails',
-  		"Settings": {
-    		"VideoDescription": {
-      		"ScalingBehavior": "DEFAULT",
-      		"TimecodeInsertion": "DISABLED",
-      		"AntiAlias": "ENABLED",
-      		"Sharpness": 50,
-      		"CodecSettings": {
-        		"Codec": "FRAME_CAPTURE",
-        		"FrameCaptureSettings": {
-          		"FramerateNumerator": 1,
-          		"FramerateDenominator": int(ets_preset_payload['Preset']['Thumbnails']['Interval']),
-          		"MaxCaptures": 10000000,
-          		"Quality": 80
-        		}
-      		},
-      		"AfdSignaling": "NONE",
-      		"DropFrameTimecode": "ENABLED",
-      		"RespondToAfd": "NONE",
-      		"ColorMetadata": "INSERT"
-    		},
-    		"ContainerSettings": {"Container": "RAW"}}}
+    
+    emf_preset_thumbnail = {
+        "Description": etsid + ' Thumbnails',
+        "Name": etsid + ' Thumbnails',
+        "Settings": {
+            "VideoDescription": {
+            "ScalingBehavior": "DEFAULT",
+            "TimecodeInsertion": "DISABLED",
+            "AntiAlias": "ENABLED",
+            "Sharpness": 50,
+            "CodecSettings": {
+                "Codec": "FRAME_CAPTURE",
+                "FrameCaptureSettings": {
+                "FramerateNumerator": 1,
+                "FramerateDenominator": int(ets_preset_payload['Preset']['Thumbnails']['Interval']),
+                "MaxCaptures": 10000000,
+                "Quality": 80
+                }
+            },
+            "AfdSignaling": "NONE",
+            "DropFrameTimecode": "ENABLED",
+            "RespondToAfd": "NONE",
+            "ColorMetadata": "INSERT"
+            },
+            "ContainerSettings": {"Container": "RAW"}}}
 
-	##Handle Auto Resolution
-	if ets_preset_payload['Preset']['Video']['MaxWidth'] !=  'auto':
-		emf_preset_thumbnail['Settings']['VideoDescription'].update({"Width" : int(ets_preset_payload['Preset']['Thumbnails']['MaxWidth'])})
+    ##Handle Auto Resolution
+    if ets_preset_payload['Preset']['Video']['MaxWidth'] !=  'auto':
+        emf_preset_thumbnail['Settings']['VideoDescription'].update({"Width" : int(ets_preset_payload['Preset']['Thumbnails']['MaxWidth'])})
 
-	if ets_preset_payload['Preset']['Video']['MaxHeight'] !=  'auto':
-		emf_preset_thumbnail['Settings']['VideoDescription'].update({"Height" : int(ets_preset_payload['Preset']['Thumbnails']['MaxHeight'])})	
-	
-	return emf_preset_thumbnail 
+    if ets_preset_payload['Preset']['Video']['MaxHeight'] !=  'auto':
+        emf_preset_thumbnail['Settings']['VideoDescription'].update({"Height" : int(ets_preset_payload['Preset']['Thumbnails']['MaxHeight'])})  
+    
+    return emf_preset_thumbnail 
 
 tregion = validation_region()
 etsclient = boto.elastictranscoder.connect_to_region(tregion)
@@ -832,64 +833,66 @@ s_video = validate_video(ets_preset_payload, unsupport_video_codec)
 s_audio = validate_audio(ets_preset_payload, unsupport_audio_codec)
 
 if s_video is not 'none':
-	emf_VideoDescription = translate_video(ets_preset_payload, s_video)
-	emf_PresetThumbnails = translate_thumbnails(ets_preset_payload, etsid)
+    emf_VideoDescription = translate_video(ets_preset_payload, s_video)
+    emf_PresetThumbnails = translate_thumbnails(ets_preset_payload, etsid)
 else:
-	emf_VideoDescription = 'none'
+    emf_VideoDescription = 'none'
 
+print "XXXXX"
+print s_audio
 if s_audio is not 'none':
-	emf_AudioDesciption = translate_audio(ets_preset_payload,s_audio)
+    emf_AudioDesciption = translate_audio(ets_preset_payload,s_audio)
 else:
-	emf_AudioDesciption = 'none'
+    emf_AudioDesciption = 'none'
 
 emf_PresetSettings = translate_container(emf_AudioDesciption,emf_VideoDescription,s_container,emf_outputgroup,s_video)
 
 if ets_preset_payload['Preset']['Description'] == None:
-	ts = time.time()	
-	emf_Description = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H-%M-%S')
-	emf_PresetSettings['Description'] = emf_Description
+    ts = time.time()    
+    emf_Description = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H-%M-%S')
+    emf_PresetSettings['Description'] = emf_Description
 else:
-	emf_PresetSettings['Description'] = ets_preset_payload['Preset']['Description']
+    emf_PresetSettings['Description'] = ets_preset_payload['Preset']['Description']
 
 if (len(ets_preset_payload['Preset']['Name']) > 40):
-	ets_PresetName = ets_preset_payload['Preset']['Name']
-	emf_PresetName = ets_PresetName[:40]
-	emf_PresetSettings['Name'] = emf_PresetName
-	print "WARNING: Warning name is greater than 40 characters, truncating... \n"
+    ets_PresetName = ets_preset_payload['Preset']['Name']
+    emf_PresetName = ets_PresetName[:40]
+    emf_PresetSettings['Name'] = emf_PresetName
+    print "WARNING: Warning name is greater than 40 characters, truncating... \n"
 else:
-	emf_PresetSettings['Name'] = ets_preset_payload['Preset']['Name']
+    emf_PresetSettings['Name'] = ets_preset_payload['Preset']['Name']
 
 if args.verbose == True:
-	print '==================VERBOSE LOGGING=================='
-    	print '====================PRESET====================='
-    	print json.dumps(emf_PresetSettings,indent=4, sort_keys=False)
-	print '====================THUMBNAILS====================='
-	if args.save == True:
-		print '==================SAVING FILES========================='
-		file = open(etsid+".json", "w")
-		file.write(json.dumps(emf_PresetSettings,indent=4, sort_keys=False))
-		file.close()
-	if s_video is not 'none':
-    			print json.dumps(emf_PresetThumbnails,indent=4, sort_keys=False)
-			if args.save == True:
-				file = open(etsid + "_Thumbnail.json", "w")
-                		file.write(json.dumps(emf_PresetThumbnails,indent=4, sort_keys=False))
-                		file.close()
-else: 
-    	print json.dumps(emf_PresetSettings,indent=4, sort_keys=True)
-	if args.save == True:
-                print '==================SAVING FILES========================='
-                file = open(etsid+".json", "w")
-                file.write(json.dumps(emf_PresetSettings,indent=4, sort_keys=False))
-                file.close()
-    	print '====================THUMBNAILS====================='
+    print '==================VERBOSE LOGGING=================='
+    print '====================PRESET====================='
+    print json.dumps(emf_PresetSettings,indent=4, sort_keys=False)
+    print '====================THUMBNAILS====================='
+    if args.save == True:
         print '==================SAVING FILES========================='
-    	if s_video is not 'none':
-		print json.dumps(emf_PresetThumbnails,indent=4, sort_keys=False)
-		if args.save == True:
-                        file = open(etsid+"_Thumbnail.json", "w")
-                        file.write(json.dumps(emf_PresetThumbnails,indent=4, sort_keys=False))
-                        file.close()
+        file = open(etsid+".json", "w")
+        file.write(json.dumps(emf_PresetSettings,indent=4, sort_keys=False))
+        file.close()
+    if s_video is not 'none':
+        print json.dumps(emf_PresetThumbnails,indent=4, sort_keys=False)
+        if args.save == True:
+            file = open(etsid + "_Thumbnail.json", "w")
+            file.write(json.dumps(emf_PresetThumbnails,indent=4, sort_keys=False))
+            file.close()
+else: 
+    print json.dumps(emf_PresetSettings,indent=4, sort_keys=True)
+    if args.save == True:
+        print '==================SAVING FILES========================='
+        file = open(etsid+".json", "w")
+        file.write(json.dumps(emf_PresetSettings,indent=4, sort_keys=False))
+        file.close()
+    print '====================THUMBNAILS====================='
+    print '==================SAVING FILES========================='
+    if s_video is not 'none':
+        print json.dumps(emf_PresetThumbnails,indent=4, sort_keys=False)
+        if args.save == True:
+                file = open(etsid+"_Thumbnail.json", "w")
+                file.write(json.dumps(emf_PresetThumbnails,indent=4, sort_keys=False))
+                file.close()
 ##### To Do: ####
 # detect audio only support for WAV/No container
 # watermarks = image inserters
